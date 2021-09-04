@@ -90,7 +90,7 @@ df1 <- sqldf("select
                     WHEN q28 = 5 THEN 'University Extension'
                     WHEN q28 = 6 THEN 'Commodity Groups'
                     WHEN q28 = 7 THEN 'Other'
-                  END AS firstchoice_cropinfo,
+                  END AS firstchoice_conserinfo,
                   CASE WHEN q29 = 1 THEN 1 ELSE 0 END AS sole_proprietorship,
                   CASE WHEN q29 = 2 THEN 1 ELSE 0 END AS partnership,
                   CASE WHEN q29 = 3 THEN 1 ELSE 0 END AS familycorporation,
@@ -120,7 +120,12 @@ df1 <- sqldf("select
                   q35_1 AS prop_hhincome_farming,
                   q36_1 AS years_farmoperatedfarm,
                   CASE WHEN q37 = 1 THEN 1 ELSE 0 END AS have_children,
-                  CASE WHEN q38 = 1 THEN 1 ELSE 0 END AS childrenlikely_takeover
+                  CASE WHEN q38 = 1 THEN 1 ELSE 0 END AS childrenlikely_takeover,
+                  CASE WHEN q12 = '#NULL!' THEN 0 ELSE 1 END AS nolandwithwetlandconfchoice,
+                  CASE WHEN q12 = 1 THEN 1 ELSE 0 END AS nointerestedrentmoreland,
+                  CASE WHEN q12 = 2 THEN 1 ELSE 0 END AS rentalpricestoohigh,
+                  CASE WHEN q12 = 3 THEN 1 ELSE 0 END AS overalllandquanotattractive,
+                  CASE WHEN q12 = 4 THEN 1 ELSE 0 END AS otherreasons
       From producer_chact
       ")
 view(df1)
