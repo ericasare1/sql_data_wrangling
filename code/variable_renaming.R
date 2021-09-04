@@ -125,7 +125,7 @@ df1 <- sqldf("select
       ")
 view(df1)
 
-
+write.csv(df1, "data/main_cleaned.csv")
 
 
 
