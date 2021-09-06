@@ -126,7 +126,7 @@ df3 <- sqldf(
         ELSE 0 END As commoditygrps_cropinfo,
   
     CASE WHEN firstchoice_conserinfo = 'Fertilizer or Ag Chemical Dealer' THEN 1 ELSE 0 END As chem_dealer_conserinfo,
-    CASE WHEN firstchoice_conserinfo = 'Seed Dealer' THEN 1 ELSE 0 END As seeddealer_cropinfo,
+    CASE WHEN firstchoice_conserinfo = 'Seed Dealer' THEN 1 ELSE 0 END As seeddealer_conserinfo,
     CASE WHEN firstchoice_conserinfo = 'Regional Agricultural Extension Specialist' THEN 1 ELSE 0 END As regagextspecialist_conserinfo,
     CASE WHEN firstchoice_conserinfo = 'Private Crop consultant' THEN 1 ELSE 0 END As privcropconsultant_conserinfo,
     CASE WHEN firstchoice_conserinfo = 'University extension' THEN 1 ELSE 0 END As univsext_conserinfo,
@@ -142,8 +142,7 @@ df3 <- sqldf(
     prop_hhincome_farming,years_farmoperatedfarm, have_children,childrenlikely_takeover
     
 From df2
-
-      ")
+")
 
 view(df3)
 
