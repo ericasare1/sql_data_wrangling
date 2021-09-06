@@ -28,7 +28,7 @@ df3 <- sqldf(
     CASE WHEN land_purchase_decision = 3 THEN 1 ELSE 0 END As bothrentbuy_next5yrs,
     CASE WHEN land_purchase_decision = 4 THEN 1 ELSE 0 END As notrentbuy_next5yrs,
     
-    num_permanent_wl, num_seasonal_wl                                                      -- wetland types on land   
+    num_permanent_wl, num_seasonal_wl,                                                      -- wetland types on land   
     
     own_eqdwl, no_rent_eqdwl, no_own_rent_eqdwl,                                           -- wetland drainage ownership
     

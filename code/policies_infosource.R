@@ -11,7 +11,8 @@ df4 <- read.csv("data/processed.csv")
 
 policies_sourceinfo <- sqldf("
 SELECT
-    -- How does these policies influence conservation dec
+    -- <<<<<<<<<<<<How does these policies influence conservation dec>>>>>>>>>>>
+     responseid, province, converted_wetland, nolandwithwetlandconfchoice,
     conservationpayment_leasteffective, conservationpayment_mosteffective,
     techassistance_leasteffective,techassistance_mosteffective,
     extensionprog_leasteffective,extensionprog_mosteffective,
@@ -19,19 +20,19 @@ SELECT
     sustainabilitycert_leasteffective,sustainabilitycert_mosteffective,
     regulation_leasteffective,regulation_mosteffective,
     
-    -- first choice infor for crop prod and conservation
+    -- <<<<<<<<<<<<<first choice infor for crop prod and conservation<<<<<<<<<<<<
     chem_dealer_cropinfo, seeddealer_cropinfo,
     regagextspecialist_cropinfo, privcropconsultant_cropinfo,
     univsext_cropinfo,commoditygrps_cropinfo,
     seeddealer_conserinfo,
     regagextspecialist_conserinfo,privcropconsultant_conserinfo,
-    univsext_conserinfo,commoditygrps_conserinfo,
+    univsext_conserinfo,commoditygrps_conserinfo
 FROM df4
 ")
 
 
 #group by province
-demo_policies_info <-  tbl_summary(
+demo_policies_info1 <-  tbl_summary(
   policies_sourceinfo,
   by = province,
   type = all_continuous() ~ "continuous2",
@@ -43,11 +44,11 @@ demo_policies_info <-  tbl_summary(
   #add_p() %>% # test for a difference between groups
   modify_header(label = "**Variable**") %>% # update the column header
   as_flex_table() %>%
-  save_as_docx("demo_table", path = "data/demo_policies_info_summ.docx")
+  save_as_docx(path = "output/policies_info_summ.docx")
 
 #group by convertedwl_past5years
 demo_policies_infoconverted <-  tbl_summary(
-  demographic,
+  policies_sourceinfo,
   by = converted_wetland,
   type = all_continuous() ~ "continuous2",
   statistic = all_continuous() ~ c( "{mean} ({sd})", 
@@ -58,11 +59,11 @@ demo_policies_infoconverted <-  tbl_summary(
   #add_p() %>% # test for a difference between groups
   modify_header(label = "**Variable**") %>% # update the column header
   as_flex_table() %>%
-  save_as_docx("demo_table", path = "data/demo_policies_info_summ_converted.docx")
+  save_as_docx(path = "output/policies_info_summ_converted.docx")
 
 #group by nochoice
 demo_policies_info_nochoice <-  tbl_summary(
-  demographic,
+  policies_sourceinfo,
   by = nolandwithwetlandconfchoice,
   type = all_continuous() ~ "continuous2",
   statistic = all_continuous() ~ c( "{mean} ({sd})", 
@@ -73,4 +74,4 @@ demo_policies_info_nochoice <-  tbl_summary(
   #add_p() %>% # test for a difference between groups
   modify_header(label = "**Variable**") %>% # update the column header
   as_flex_table() %>%
-  save_as_docx("demo_table", path = "output/demo_policies_info_summ_nochoice.docx")
+  save_as_docx(path = "output/policies_info_summ_nochoice.docx")

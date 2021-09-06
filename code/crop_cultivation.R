@@ -30,7 +30,7 @@ view(crop_cultivation)
 
 #group by province
 crop_cultivation_prov <-  tbl_summary(
-  demographic,
+  crop_cultivation,
   by = province,
   type = all_continuous() ~ "continuous2",
   statistic = all_continuous() ~ c( "{mean} ({sd})", 
@@ -41,11 +41,11 @@ crop_cultivation_prov <-  tbl_summary(
   #add_p() %>% # test for a difference between groups
   modify_header(label = "**Variable**") %>% # update the column header
   as_flex_table() %>%
-  save_as_docx("demo_table", path = "data/crop_cultivation.docx")
+  save_as_docx(path = "output/crop_cultivation_province.docx")
 
 #group by convertedwl_past5years
 crop_cultivation_conv <-  tbl_summary(
-  demographic,
+  crop_cultivation,
   by = converted_wetland,
   type = all_continuous() ~ "continuous2",
   statistic = all_continuous() ~ c( "{mean} ({sd})", 
@@ -56,11 +56,11 @@ crop_cultivation_conv <-  tbl_summary(
   #add_p() %>% # test for a difference between groups
   modify_header(label = "**Variable**") %>% # update the column header
   as_flex_table() %>%
-  save_as_docx("demo_table", path = "data/crop_cultivation_converted.docx")
+  save_as_docx(path = "output/crop_cultivation_converted.docx")
 
 #group by nochoice
 crop_cultivation_nochoice <-  tbl_summary(
-  demographic,
+  crop_cultivation,
   by = nolandwithwetlandconfchoice,
   type = all_continuous() ~ "continuous2",
   statistic = all_continuous() ~ c( "{mean} ({sd})", 
@@ -71,4 +71,4 @@ crop_cultivation_nochoice <-  tbl_summary(
   #add_p() %>% # test for a difference between groups
   modify_header(label = "**Variable**") %>% # update the column header
   as_flex_table() %>%
-  save_as_docx("demo_table", path = "output/crop_cultivation_nochoice.docx")
+  save_as_docx(path = "output/crop_cultivation_nochoice.docx")

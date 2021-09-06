@@ -34,7 +34,7 @@ demo_table <-  tbl_summary(
   #add_p() %>% # test for a difference between groups
   modify_header(label = "**Variable**") %>% # update the column header
   as_flex_table() %>%
-  save_as_docx("demo_table", path = "data/demo_summ.docx")
+  save_as_docx(path = "output/demo_province.docx")
 
 #group by convertedwl_past5years
 demo_converted <-  tbl_summary(
@@ -49,7 +49,7 @@ demo_converted <-  tbl_summary(
   #add_p() %>% # test for a difference between groups
   modify_header(label = "**Variable**") %>% # update the column header
   as_flex_table() %>%
-  save_as_docx("demo_table", path = "data/demo_summ_converted.docx")
+  save_as_docx(path = "output/demo_summ_converted.docx")
 
 #group by nochoice
 demo_nochoice <-  tbl_summary(
@@ -64,4 +64,4 @@ demo_nochoice <-  tbl_summary(
   #add_p() %>% # test for a difference between groups
   modify_header(label = "**Variable**") %>% # update the column header
   as_flex_table() %>%
-  save_as_docx("demo_table", path = "output/demo_summ_nochoice.docx")
+  save_as_docx(path = "output/demo_summ_nochoice.docx")
