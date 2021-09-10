@@ -22,7 +22,7 @@ From (select REF_DATE AS year, GEO as province, VALUE AS value, `Operating arran
 Where year = 2016
 ")
 
-view(sex2)
+view(opermgt2)
 
 opermgt3 <- sqldf(" 
 
@@ -31,7 +31,7 @@ Select province,
     sum(partner * value) AS partnership,
     sum(familycorp * value) As familycorporation,
     sum(nonfarmcorp * value) As nonfarmcorpoation,
-    sum(value) As totalfarmers
+    sum(value) As totalcase
 
 From  (Select *,
     CASE WHEN bustype ='Sole proprietorship' THEN 1 ELSE 0 END AS sole,  
@@ -44,7 +44,16 @@ From  (Select *,
 group by province
   
 ")
+
+bus_proportions <-sqldf("
+                      Select province, round(100*(sole_prop/totalcase),2) As perc_sole_prop, 
+                              round(100*(partnership/totalcase),2) AS perc_partnership,
+                              round(100*(familycorporation/totalcase),2) AS perc_familycorporation,
+                              round(100*(nonfarmcorpoation/totalcase),2) AS perc_nonfarmcorpoation
+                      From opermgt3
+                        ")
+view(bus_proportions)
 view(opermgt3)
 
-write.csv(opermgt3, "data/businesstype.csv")
+write.csv(bus_proportions, "data/businesstype.csv")
 

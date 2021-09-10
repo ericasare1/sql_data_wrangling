@@ -22,11 +22,19 @@ educationlevel2 <- sqldf("
 
 Select REF_DATE AS year, GEO as province, VALUE AS value, `Level of educational attainment` AS edulevel, `Farm operators` AS operators 
 from educationlevel
-where GEO = 'Saskatchewan'  OR GEO = 'Alberta' OR GEO = 'Manitoba' 
+where GEO = 'Saskatchewan'  OR GEO = 'Alberta' OR GEO = 'Manitoba' AND (operators = 'On farms with one operator')
 
 ")
 
-view(educationlevel2)
+educationlevel2b <- sqldf("
+
+Select  * 
+from educationlevel2
+where operators = 'On farms with one operator'
+
+
+")
+view(educationlevel2b)
 educationlevel3 <- sqldf(" 
 
 Select province,  
@@ -37,7 +45,7 @@ Select province,
 From(
 
 Select *,
-    CASE WHEN edulevel ='Operators with no university degree' AND operators = 'On farms with one operator' THEN 1 ELSE 0 END AS nouniversitydegree,  
+    CASE WHEN edulevel ='Operators with no university degree'  THEN 1 ELSE 0 END AS nouniversitydegree,  
     CASE WHEN edulevel ='Operators with university degree' AND operators = 'On farms with one operator' THEN 1 ELSE 0 END AS universitydegree  
 
  From educationlevel2)
