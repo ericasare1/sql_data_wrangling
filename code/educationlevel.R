@@ -49,3 +49,14 @@ view(educationlevel3)
 
 write.csv(educationlevel3, "data/educationlevel.csv")
 
+education_proportions <- sqldf(" 
+
+Select province,  
+    (nodegree/total) AS prop_with_nodegree, 
+    (degree/total) AS prop_with_degree
+
+From educationlevel3
+
+")
+
+view(education_proportions)

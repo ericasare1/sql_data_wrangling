@@ -11,12 +11,6 @@ age <- get_cansim(
 
 view(age)
 
-
-sqldf("
-      select distinct(Technologies)
-      From farmtech_use
-      ")
-
 age2 <- sqldf("
 
 Select * 
@@ -25,24 +19,25 @@ From (select REF_DATE AS year, GEO as province, VALUE AS value, `Farm operators 
       where GEO = 'Saskatchewan [PR470000000]' 
         OR GEO = 'Alberta [PR480000000]' OR GEO = 'Manitoba [PR460000000]' 
       )
-Where year = 2016
+Where year = 2016 AND farm ='Farms with one operator' 
+      AND (age = 'under 35 years' OR age = '35 to 54 years' OR age = '55 years and over')
+      
 ")
 
-view(farmtech_use2)
+view(age2)
 
 age3 <- sqldf(" 
 
 Select province, sum(under35 * value) AS ageunder35,  
     sum(age35to54 * value) AS age35to54s, 
     sum(age55andmore * value) AS age55andmore,
-    sum(onefarmer * value) As totalonecasefarmers
+    sum(value) As totalcase
 
 From  (Select *,
-    CASE WHEN farm ='Farms with one operator' AND age = 'under 35 years' THEN 1 ELSE 0 END AS under35,  
-    CASE WHEN farm ='Farms with one operator' AND age = '35 to 54 years' THEN 1 ELSE 0 END AS age35to54,  
-    CASE WHEN farm ='Farms with one operator' AND age = '55 years and over' THEN 1 ELSE 0 END AS age55andmore,  
-    CASE WHEN farm ='Farms with one operator' THEN 1 ELSE 0 END AS onefarmer 
-    
+    CASE WHEN age = 'under 35 years' THEN 1 ELSE 0 END AS under35,  
+    CASE WHEN age = '35 to 54 years' THEN 1 ELSE 0 END AS age35to54,  
+    CASE WHEN age = '55 years and over' THEN 1 ELSE 0 END AS age55andmore  
+
   From age2)
   
 group by province
@@ -50,5 +45,12 @@ group by province
 ")
 view(age3)
 
-write.csv(age3, "data/age.csv")
+age_proportions <-sqldf("
+                      Select province, round(100*(ageunder35/totalcase),2) As perc_ageunder35, 
+                              round(100*(age35to54s/totalcase),2) AS perc_age35to54s, round(100*(age55andmore/totalcase),2) AS perc_age55andmore
+                      From age3
+                        ")
+view(age_proportions)
+
+write.csv(age_proportions, "data/age.csv")
 

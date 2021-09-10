@@ -6,7 +6,7 @@ if(!require(pacman)) {
 }
 
 #load
-p_load(tidyverse,gtsummary,flextable)
+p_load(tidyverse,gtsummary,flextable,sqldf)
 
 df4 <- read.csv("data/processed.csv")
 
@@ -15,8 +15,11 @@ SELECT
 
     responseid, province, converted_wetland, nolandwithwetlandconfchoice,
     converted_bush, converted_bush, converted_wetland, converted_nativegrassland,
-    cropland_owned, hayland_owned, pastland_owned,
-    cropland_rented, hayland_rented, pastland_rented, totalacres,
+    cropland_owned, hayland_owned, pastland_owned, 
+    (cropland_owned+ hayland_owned + pastland_owned) AS acres_owned,
+    (cropland_rented + hayland_rented + pastland_rented) AS acres_rented,
+    cropland_rented, hayland_rented, pastland_rented,
+    totalacres,
     canola, barley, rye, spring_wheat, beans, peas, flaxseed, 
     lentil, soybeans, corn, oats, sunflower, others, 
     auto_guidance, gps, variable_rate, drones, soil_test, slow_release_fert,
@@ -32,9 +35,9 @@ view(crop_cultivation)
 crop_cultivation_prov <-  tbl_summary(
   crop_cultivation,
   by = province,
-  type = all_continuous() ~ "continuous2",
-  statistic = all_continuous() ~ c( "{mean} ({sd})", 
-                                    "{min}, {max}"),
+  #type = all_continuous() ~ "continuous2",
+  #statistic = all_continuous() ~ c( "{mean} ({sd})", 
+  #                                 "{min}, {max}"),
   missing = "no"
 ) %>%
   add_n() %>% # add column with total number of non-missing observations
