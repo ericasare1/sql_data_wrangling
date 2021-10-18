@@ -48,7 +48,7 @@ group by province
 view(sex3)
 
 sex_proportions <-sqldf("
-                      Select province, round(100*(males/totalcase),2) As perc_males, 
+                      Select *, round(100*(males/totalcase),2) As perc_males, 
                               round(100*(females/totalcase),2) AS perc_females, round(100*(both/totalcase),2) AS perc_both
                       From sex3
                         ")

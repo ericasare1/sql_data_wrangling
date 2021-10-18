@@ -12,7 +12,7 @@ df4 <- read.csv("data/processed.csv")
 policies_sourceinfo <- sqldf("
 SELECT
     -- <<<<<<<<<<<<How does these policies influence conservation dec>>>>>>>>>>>
-     responseid, province, converted_wetland, nolandwithwetlandconfchoice,
+    responseid, province, converted_wetland, nolandwithwetlandconfchoice,
     conservationpayment_leasteffective, conservationpayment_mosteffective,
     techassistance_leasteffective,techassistance_mosteffective,
     extensionprog_leasteffective,extensionprog_mosteffective,
@@ -60,18 +60,3 @@ demo_policies_infoconverted <-  tbl_summary(
   modify_header(label = "**Variable**") %>% # update the column header
   as_flex_table() %>%
   save_as_docx(path = "output/policies_info_summ_converted.docx")
-
-#group by nochoice
-demo_policies_info_nochoice <-  tbl_summary(
-  policies_sourceinfo,
-  by = nolandwithwetlandconfchoice,
-  type = all_continuous() ~ "continuous2",
-  statistic = all_continuous() ~ c( "{mean} ({sd})", 
-                                    "{min}, {max}"),
-  missing = "no"
-) %>%
-  add_n() %>% # add column with total number of non-missing observations
-  #add_p() %>% # test for a difference between groups
-  modify_header(label = "**Variable**") %>% # update the column header
-  as_flex_table() %>%
-  save_as_docx(path = "output/policies_info_summ_nochoice.docx")

@@ -18,26 +18,27 @@ sqldf("
       ")
 
 farm_succession2 <- sqldf("
-
-Select * 
-From (select REF_DATE AS year, GEO as province, VALUE AS value, `Succession planning` AS succession
-      from farm_succession
-      where GEO = 'Saskatchewan [PR470000000]' 
-        OR GEO = 'Alberta [PR480000000]' OR GEO = 'Manitoba [PR460000000]' 
-      )
-Where year = 2016
+select *
+From (
+      Select * 
+      From (select REF_DATE AS year, GEO as province, VALUE AS value, `Succession planning` AS succession
+            from farm_succession
+            where GEO = 'Saskatchewan [PR470000000]' 
+              OR GEO = 'Alberta [PR480000000]' OR GEO = 'Manitoba [PR460000000]' 
+            )
+      Where year = 2016)
+where succession !='All farms reporting a succession plan' 
 ")
 
 view(farm_succession2)
 
 farm_succession3 <- sqldf(" 
 
-Select province, sum(report_successionplan * value) AS num_reportsuccessionplan,  
-    sum(succ_fammember * value) AS num_succfammember, 
-    sum(succ_nonfammember * value) AS num_nonsuccfammember
+Select province, sum(value) AS totalcase,  
+    sum(succ_fammember * value) AS succfammember, 
+    sum(succ_nonfammember * value) AS nonsuccfammember
 
 From  (Select *,
-    CASE WHEN succession ='All farms reporting a succession plan' THEN 1 ELSE 0 END AS report_successionplan,  
     CASE WHEN succession ='Successor(s) - family member(s)' THEN 1 ELSE 0 END AS succ_fammember,  
     CASE WHEN succession ='Successor(s) - non-family member(s)' THEN 1 ELSE 0 END AS succ_nonfammember  
     
@@ -46,7 +47,13 @@ From  (Select *,
 group by province
   
 ")
-view(farm_succession3)
 
-write.csv(farm_succession3, "data/farm_succession.csv")
+succession_proportions <-sqldf("
+                      Select *, round(100*(succfammember/totalcase),2) As perc_succfammember, 
+                              round(100*(nonsuccfammember/totalcase),2) AS perc_nonsuccfammember 
+                      From farm_succession3
+                        ")
+view(succession_proportions)
+
+write.csv(succession_proportions, "data/farm_succession.csv")
 

@@ -46,7 +46,7 @@ group by province
 view(age3)
 
 age_proportions <-sqldf("
-                      Select province, round(100*(ageunder35/totalcase),2) As perc_ageunder35, 
+                      Select *, round(100*(ageunder35/totalcase),2) As perc_ageunder35, 
                               round(100*(age35to54s/totalcase),2) AS perc_age35to54s, round(100*(age55andmore/totalcase),2) AS perc_age55andmore
                       From age3
                         ")

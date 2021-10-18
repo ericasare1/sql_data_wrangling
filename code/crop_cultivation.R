@@ -13,12 +13,11 @@ df4 <- read.csv("data/processed.csv")
 crop_cultivation <- sqldf("
 SELECT
 
-    responseid, province, converted_wetland, nolandwithwetlandconfchoice,
-    converted_bush, converted_bush, converted_wetland, converted_nativegrassland,
+    responseid, province, nolandwithwetlandconfchoice,
+    converted_bush, converted_wetland, converted_nativegrassland,
     cropland_owned, hayland_owned, pastland_owned, 
     (cropland_owned+ hayland_owned + pastland_owned) AS acres_owned,
     (cropland_rented + hayland_rented + pastland_rented) AS acres_rented,
-    cropland_rented, hayland_rented, pastland_rented,
     totalacres,
     canola, barley, rye, spring_wheat, beans, peas, flaxseed, 
     lentil, soybeans, corn, oats, sunflower, others, 
@@ -35,9 +34,9 @@ view(crop_cultivation)
 crop_cultivation_prov <-  tbl_summary(
   crop_cultivation,
   by = province,
-  #type = all_continuous() ~ "continuous2",
-  #statistic = all_continuous() ~ c( "{mean} ({sd})", 
-  #                                 "{min}, {max}"),
+  type = all_continuous() ~ "continuous2",
+  statistic = all_continuous() ~ c( "{mean} ({sd})", 
+                                   "{min}, {max}"),
   missing = "no"
 ) %>%
   add_n() %>% # add column with total number of non-missing observations
@@ -61,17 +60,3 @@ crop_cultivation_conv <-  tbl_summary(
   as_flex_table() %>%
   save_as_docx(path = "output/crop_cultivation_converted.docx")
 
-#group by nochoice
-crop_cultivation_nochoice <-  tbl_summary(
-  crop_cultivation,
-  by = nolandwithwetlandconfchoice,
-  type = all_continuous() ~ "continuous2",
-  statistic = all_continuous() ~ c( "{mean} ({sd})", 
-                                    "{min}, {max}"),
-  missing = "no"
-) %>%
-  add_n() %>% # add column with total number of non-missing observations
-  #add_p() %>% # test for a difference between groups
-  modify_header(label = "**Variable**") %>% # update the column header
-  as_flex_table() %>%
-  save_as_docx(path = "output/crop_cultivation_nochoice.docx")

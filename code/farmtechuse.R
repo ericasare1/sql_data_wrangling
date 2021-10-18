@@ -35,7 +35,7 @@ farmtech_use3 <- sqldf("
 Select province, sum(auto_steer * value) AS num_autosteer,  
     sum(gps * value) AS num_gps, 
     sum(gpsmapping_egsoiltest * value) AS num_gpsmapping,
-    sum(value) As totaltechuse
+    sum(value) As totalcase
 
 From  (Select *,
     CASE WHEN tech ='Automated steering (auto-steer)' THEN 1 ELSE 0 END AS auto_steer,  
@@ -47,7 +47,14 @@ From  (Select *,
 group by province
   
 ")
-view(farmtech_use3)
 
-write.csv(farmtech_use3, "data/farmtech_use.csv")
+farmtech_proportions <-sqldf("
+                      Select *, round(100*(num_autosteer/totalcase),2) As perc_autosteer, 
+                              round(100*(num_gps/totalcase),2) AS perc_gps, 
+                              round(100*(num_gpsmapping/totalcase),2) AS perc_gpsmapping
+                      From farmtech_use3
+                        ")
+view(farmtech_proportions)
+
+write.csv(farmtech_proportions, "data/farmtech_use.csv")
 

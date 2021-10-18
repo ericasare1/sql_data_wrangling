@@ -53,7 +53,7 @@ df3 <- sqldf(
     rate_effonnearbyflooding, rate_effsurrlandacc, rate_delayedplanting, 
     rate_weedcontrol, rate_wildlifehabitat,
     
-    restwl5perland_20percpremium, participatewlconser_anypremium, have_environfarmplan,    -- will you restore wl based on some incentives?
+    conserwl_mandatorypartsustainagcert, haveenvfarmplan, partbmp,    -- will you restore wl based on some incentives?
     
     CASE WHEN import_waterquality_ess = 1 THEN 1 ELSE 0 END As waterqual_veryimport,       -- ESS importance
     CASE WHEN import_waterquality_ess = 2 THEN 1 ELSE 0 END As waterqual_slightlyimport,
@@ -146,7 +146,7 @@ From df2
 
 view(df3)
 
-write.csv(df3, "data/processed.csv")
+write.csv(df3, "data/processednew.csv")
 
 
 

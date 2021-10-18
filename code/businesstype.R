@@ -46,7 +46,7 @@ group by province
 ")
 
 bus_proportions <-sqldf("
-                      Select province, round(100*(sole_prop/totalcase),2) As perc_sole_prop, 
+                      Select *, round(100*(sole_prop/totalcase),2) As perc_sole_prop, 
                               round(100*(partnership/totalcase),2) AS perc_partnership,
                               round(100*(familycorporation/totalcase),2) AS perc_familycorporation,
                               round(100*(nonfarmcorpoation/totalcase),2) AS perc_nonfarmcorpoation
