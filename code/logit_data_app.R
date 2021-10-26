@@ -41,3 +41,31 @@ if(!require(pacman)) {
   library(pacman)
 }
 
+#load
+p_load(tidyverse,gtsummary,flextable, Rcpp)
+
+#group by province
+logitsumm <-  tbl_summary(
+  df_logit,
+  by = province,
+  type = all_continuous() ~ "continuous2",
+  statistic = all_continuous() ~ c( "{mean} ({sd})", 
+                                    "{min}, {max}"),
+  missing = "no"
+) %>%
+  add_n() %>% # add column with total number of non-missing observations
+  as_flex_table() %>%
+  save_as_docx(path = "output/logitsumm.docx")
+
+#allfday6a
+logitsummall <-  tbl_summary(
+  df_logit,
+  type = all_continuous() ~ "continuous2",
+  statistic = all_continuous() ~ c( "{mean} ({sd})", 
+                                    "{min}, {max}"),
+  missing = "no"
+) %>%
+  add_n() %>% # add column with total number of non-missing observations
+  as_flex_table() %>%
+  save_as_docx(path = "output/alldatalogitsumm.docx")
+
