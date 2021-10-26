@@ -89,7 +89,7 @@ df3 <- sqldf(
     CASE WHEN qualitywl_trendfromknowledge = 5 THEN 1 ELSE 0 END As waterquality_increasedalot,
     
     CASE WHEN conservationpayment_rankagconserprg = 1 THEN 1 
-         ELSE 0 END As conservationpayment_leasteffective,                                      -- How does these policies influence conservation dec
+         ELSE 0 END As conservationpayment_leasteffective,           -- How does these policies influence conservation dec
     CASE WHEN conservationpayment_rankagconserprg = 6 THEN 1 
         ELSE 0 END As conservationpayment_mosteffective,
     CASE WHEN techassistance_rankagconserprg = 1 THEN 1 
